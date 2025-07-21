@@ -1,0 +1,19 @@
+{
+  "name": "recipics-lambda",
+  "version": "1.0.0",
+  "description": "Backend service for Recipics lambda functions and api gateway",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:offline": "sls offline start "
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-offline": "^14.4.0"
+  },
+  "dependencies": {
+    "apollo-server-lambda": "^3.13.0",
+    "graphql": "^16.11.0"
+  }
+}

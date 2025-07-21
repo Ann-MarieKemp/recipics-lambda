@@ -1,0 +1,50 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: recipics
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: recipics-lambda
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-west-1
+  stage: ${opt:stage, 'dev'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+          Resource:
+            - arn:aws:s3:::recipix-recipes-${self:provider.stage}/*
+
+functions:
+  recipeImageUpload:
+    handler: recipeHandler.recipeImageUpload
+    events:
+      - http:
+          path: recipeImageUpload
+          method: get
+          cors: true
+resources:
+  Resources:
+    RecipeImageUploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: recipics-recipes-${self:provider.stage}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+              MaxAge: 3000
+
+
+plugins:
+  - serverless-offline
